@@ -6,7 +6,6 @@ class TestLoginUser:
 
     @allure.title("Логин существующего пользователя")
     def test_login_user(self, new_user):
-
         payload, token = new_user
 
         login_data = {
@@ -17,17 +16,17 @@ class TestLoginUser:
         response = login_user(login_data)
 
         assert response.status_code == 200
-        assert response.json()["success"] is True
-
+        assert response.json()["success"]
 
     @allure.title("Логин с неверными данными")
     def test_login_wrong_user(self):
 
         login_data = {
-            "email": "wrong@mail.com",
+            "email": "wrong@email.com",
             "password": "123456"
         }
 
         response = login_user(login_data)
 
         assert response.status_code == 401
+        assert not response.json()["success"]

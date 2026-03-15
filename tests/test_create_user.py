@@ -16,8 +16,7 @@ class TestCreateUser:
         response = create_user(payload)
 
         assert response.status_code == 200
-        assert response.json()["success"] is True
-
+        assert response.json()["success"]
 
     @allure.title("Создание пользователя, который уже существует")
     def test_create_existing_user(self, new_user):
@@ -26,11 +25,11 @@ class TestCreateUser:
         response = create_user(payload)
 
         assert response.status_code == 403
-
+        assert response.json()["success"] is False
+        assert response.json()["message"] == "User already exists"
 
     @allure.title("Создание пользователя без обязательного поля")
     def test_create_user_without_field(self):
-
         payload = {
             "email": generate_email(),
             "password": generate_password()
@@ -39,3 +38,4 @@ class TestCreateUser:
         response = create_user(payload)
 
         assert response.status_code == 403
+        assert response.json()["success"] is False
